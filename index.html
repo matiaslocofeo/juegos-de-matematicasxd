@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Juego de Matemáticas</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f0f0f0; }
+        h1 { color: #333; }
+        .game-box { background: white; padding: 20px; border-radius: 10px; display: inline-block; margin-top: 50px; }
+        .result { margin-top: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Juego de Matemáticas</h1>
+    <div class="game-box">
+        <h2 id="level">Nivel: 1 (Fácil)</h2>
+        <div id="problem"></div>
+        <input type="number" id="answer" placeholder="Tu respuesta">
+        <div>
+            <button onclick="checkAnswer()">Comprobar</button>
+        </div>
+        <div class="result" id="message"></div>
+    </div>
 
+    <script>
+        let level = 1;
+        let num1, num2, operator, solution;
+
+        function generateProblem() {
+            let max = 10;
+            if (level === 2) max = 50;
+            if (level >= 3) max = 100;
+
+            num1 = Math.floor(Math.random() * max);
+            num2 = Math.floor(Math.random() * max);
+            operator = ['+', '-', '*'][Math.floor(Math.random() * 3)];
+
+            if (operator === '+') solution = num1 + num2;
+            else if (operator === '-') solution = num1 - num2;
+            else solution = num1 * num2;
+
+            document.getElementById('problem').innerText = `${num1} ${operator} ${num2} = ?`;
+        }
+
+        function checkAnswer() {
+            let answer = parseInt(document.getElementById('answer').value);
+            if (answer === solution) {
+                level++;
+                let levelName = level === 2 ? "Promedio" : (level >= 3 ? "Difícil" : "Fácil");
+                document.getElementById('level').innerText = `Nivel: ${level} (${levelName})`;
+                document.getElementById('message').innerText = '¡Correcto! Avanzas al siguiente nivel.';
+                generateProblem();
+            } else {
+                document.getElementById('message').innerText = 'Incorrecto. Intenta otra vez.';
+            }
+            document.getElementById('answer').value = '';
+        }
+
+        generateProblem();
+    </script>
+</body>
+</html>
